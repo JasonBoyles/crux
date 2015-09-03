@@ -40,4 +40,5 @@ class CrxPackageClient:
         r = s.get(url, stream=True)
         for bytes in r.iter_content(chunk_size=4096):
             f.write(bytes)
+        f.seek(0)
         return f
