@@ -1,5 +1,9 @@
 
+import json
+import logging
+import os
 import requests
+import subprocess
 import xml.etree.ElementTree as ElementTree
 from tempfile import TemporaryFile
 
@@ -35,10 +39,36 @@ class CrxPackageClient:
         endpoint = self.endpoint
         s = self.session
         f = TemporaryFile()
-        url = '/'.join([endpoint, 'crx/packmgr/download.jsp?_charset_=utf-8&' +
-                        'path=/etc/packages', group, zipname])
-        r = s.get(url, stream=True)
+        url = '/'.join([endpoint, 'crx/packmgr/download.jsp'])
+        params = {'_charset': 'utf-8',
+                  'path': '/etc/packages/{}/{}'.format(group, zipname)}
+        r = s.get(url, params=params, stream=True)
         for bytes in r.iter_content(chunk_size=4096):
             f.write(bytes)
         f.seek(0)
         return f
+
+    def upload_package(self, package_file, name, force=True, install=False):
+        endpoint = self.endpoint
+        session = self.session
+        logging.debug('endpoint is {}'.format(endpoint))
+        url = '/'.join([endpoint, 'crx/packmgr/service.jsp'])
+        logging.debug('url is {}'.format(url))
+        force = (force and 'true' or 'false')
+        install = (install and 'true' or 'false')
+        form = {
+            'file':
+                (package_file,
+                 open(package_file, 'rb'),
+                 'application/zip',
+                 {}),
+            'name': name,
+            'force': force,
+            'install': install
+        }
+        logging.debug('install is {} and force is {}'.format(install, force))
+        response = session.post(url, files=form)
+        logging.debug(
+            'response status_code is:\n{}'.format(response.status_code))
+        logging.debug('response text is:\n{}'.format(response.text))
+        return True
