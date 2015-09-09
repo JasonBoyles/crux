@@ -1,0 +1,10 @@
+requests==2.7.0
+
+
+
+cq-geometrixx-outdoors-app-pkg-5.8.52.zip
+
+
+
+
+curl -v -u admin:admin123 -F file=@"/Users/jgb/Downloads/cq-geometrixx-outdoors-app-pkg-5.8.52.zip" -F name="cq-geometrixx-outdoors-app-pkg"  -F force=true -F install=false http://192.168.99.100:4502/crx/packmgr/service.jsp
