@@ -28,8 +28,9 @@ class CrxPackageClient:
     def package_list(self):
         endpoint = self.endpoint
         s = self.session
-        url = '/'.join([endpoint, 'crx/packmgr/service.jsp?cmd=ls'])
-        r = s.post(url)
+        url = '/'.join([endpoint, 'crx/packmgr/service.jsp'])
+        params = {'cmd': 'ls'}
+        r = s.post(url, params=params)
         return self._package_list_xml_to_dict(r.text)
 
     def export_package(self, group, zipname):
