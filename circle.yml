@@ -1,0 +1,11 @@
+machine:
+  python:
+    version: 2.7.10
+
+dependencies:
+  post:
+    - pip install flake8
+
+test:
+  override:
+    - flake8 crux
