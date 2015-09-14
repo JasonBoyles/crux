@@ -1,9 +1,6 @@
 
-import json
 import logging
-import os
 import requests
-import subprocess
 import xml.etree.ElementTree as ElementTree
 from tempfile import TemporaryFile
 
