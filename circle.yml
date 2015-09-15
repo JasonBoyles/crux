@@ -9,3 +9,4 @@ dependencies:
 test:
   override:
     - flake8 crux
+    - pip install .
